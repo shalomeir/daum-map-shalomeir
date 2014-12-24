@@ -1,0 +1,129 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <daum-map-shalomeir></daum-map-shalomeir>
+
+@element daum-map-shalomeir
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://polymerlabs.github.io/daum-map-shalomeir
+-->
+<polymer-element name="daum-map-shalomeir" attributes="apikey level width height">
+
+  <template>
+
+    <link rel="stylesheet" href="daum-map-shalomeir.css" />
+
+    <!--this.$.map 으로 접근 가능-->
+    <div id="map"></div>
+
+
+  </template>
+
+  <script>
+
+    Polymer({
+      /**
+       * The `author` attribute sets an initial author
+       *
+       * @attribute author
+       * @type string
+       * @default 'Dimitri Glazkov'
+       */
+      map : undefined,
+      apikey: '',
+      latitude: 33.450701,
+      longitude : 126.570667,
+      level:3,
+      width: 0,
+      height: 0,
+
+      /**
+       * The `map-click` event is fired whenever we
+       * call fireLasers.
+       *
+       * @event map-click
+       * @param {Object} event
+       *   @param {Object} event.detail.latLng. A Lat, Lng of point
+       *   @param {Object} event.detail.point. A point of click
+       */
+
+      /**
+       * The `fireMapClick` method will fire the click event when
+       * user click on the map
+       *
+       * @method fireMapClick
+       */
+      fireMapClick: function(e) {
+        this.fire('map-click', e);
+      },
+
+      // Run when latitude has been changed
+      latitudeChanged: function(oldLatitude, newLatitude) {
+        var center = this.map.getCenter();
+        this.map.setCenter(new daum.maps.LatLng(newLatitude, center.getLng()));
+      },
+
+      // Run when longitude has been changed
+      longitudeChanged: function(oldLongitude, newLongitude) {
+        var center = this.map.getCenter();
+        this.map.setCenter(new daum.maps.LatLng(center.getLat(), newLongitude));
+      },
+
+      // Run when level has been changed
+      levelChanged: function(oldLevel, newLevel) {
+        this.map && this.map.setLevel(newLevel);
+      },
+
+      // Run when width has been changed
+      widthChanged: function(oldWidth, newWidth) {
+        this.$.map.style.width = this.pixelize(newWidth);
+        this.map && this.map.relayout();
+      },
+
+      // Run when height has been changed
+      heightChanged: function(oldHeight, newHeight) {
+        this.$.map.style.height = this.pixelize(newHeight);
+        this.map && this.map.relayout();
+      },
+
+      // Make a width with 'px'
+      pixelize: function(s) {
+        return s + (!/px^/.test(s) ? 'px' : '');
+      },
+
+      // Util for appending script
+      appendScript: function(src, onload) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.onload = onload.bind(this);
+        document.head.appendChild(script);
+      },
+
+      // Ready to use elements in custom elements
+      ready: function() {
+        var _this = this;
+
+        this.appendScript('//apis.daum.net/maps/maps3.js?autoload=false&apikey=' + this.apikey, function() {
+          daum.maps.load(function() {
+            // Create a new daum map
+            _this.map = new daum.maps.Map(_this.$.map, {
+              center: new daum.maps.LatLng(_this.latitude, _this.longitude),
+              level: _this.level
+            });
+
+            // Add handler for click event
+            daum.maps.event.addListener(_this.map, 'click', function(e) {
+              _this.fireMapClick(e);
+            });
+          });
+        });
+      }
+    });
+  </script>
+
+</polymer-element>

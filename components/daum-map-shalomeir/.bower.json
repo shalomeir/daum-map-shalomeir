@@ -1,0 +1,27 @@
+{
+  "name": "daum-map-shalomeir",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components"
+  ],
+  "main": "daum-map-shalomeir.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1",
+    "paper-slider": "Polymer/paper-slider#~0.5.2"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.0"
+  },
+  "homepage": "https://github.com/shalomeir/daum-map-shalomeir",
+  "_release": "fcbd1a83e5",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "fcbd1a83e5ae631cdc6215b186a4bdf276671014"
+  },
+  "_source": "git://github.com/shalomeir/daum-map-shalomeir.git",
+  "_target": "master",
+  "_originalSource": "shalomeir/daum-map-shalomeir",
+  "_direct": true
+}

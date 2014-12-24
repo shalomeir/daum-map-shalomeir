@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>daum-map-shalomeir Demo</title>
+
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+
+  <link rel="import" href="daum-map-shalomeir.html">
+
+  <link rel="import" href="../paper-input/paper-input.html">
+  <link rel="import" href="../paper-button/paper-button.html">
+  <link rel="import" href="../paper-slider/paper-slider.html">
+
+  <style>
+    paper-slider {
+      width: 100%;
+    }
+  </style>
+  <script>
+    // Bind event handler
+    function bindEventHandler(selector, event, fn) {
+      var e = document.querySelectorAll(selector);
+      for (var i = 0; i < e.length; ++i) {
+        e[i].addEventListener(event, fn);
+      };
+    }
+
+    // Change label for lat, lng
+    function setLatLng(lat, lng) {
+      document.querySelector('#click-latlng').textContent = [lat, lng].join(' ');
+    };
+
+    window.addEventListener('polymer-ready', function() {
+      // Keep daum map reference
+      window.daumMap = document.querySelector('daum-map');
+
+      // Bind event handler for paper-slider
+      bindEventHandler('paper-slider', 'immediate-value-change', function(e) {
+        daumMap[e.target.id] = e.target.immediateValue;
+      });
+
+      // Bind click event for daum map
+      daumMap.addEventListener('map-click', function(e) {
+        setLatLng(e.detail.latLng.getLat(), e.detail.latLng.getLng());
+      });
+
+      // Set default lat, lng
+      setLatLng(document.querySelector('#latitude').value, document.querySelector('#longitude').value);
+    });
+
+  </script>
+
+</head>
+<body unresolved>
+
+  <h2>Daum Map based on Web Components</h2>
+  <div horizontal layout>
+    <div vertical layout style="width:406px; margin-right:26px">
+
+      <core-label>
+        Latitude
+        <paper-slider id="latitude" min="33.1234" max="38.6154" value="33.4507" step="0.001" immediateValue="0.001"></paper-slider>
+      </core-label>
+      <br/>
+      <core-label>
+        Longitude
+        <paper-slider id="longitude" min="125.020" max="131.154" value="126.570" step="0.001" immediateValue="0.001"></paper-slider>
+      </core-label>
+      <core-label>
+        Level
+        <paper-slider id="level" min="1" max="10" value="3" immediateValue="1" snaps="true" step="1" pin="true"></paper-slider>
+      </core-label>
+      <br/>
+      <core-label>
+        Map Width
+        <paper-slider id="width" min="400" max="1024" value="400" immediateValue="24" snaps="true" step="24" pin="true"></paper-slider>
+      </core-label>
+      <br/>
+      <core-label>
+        Map Height
+        <paper-slider id="height" min="400" max="1024" value="400" immediateValue="24" snaps="true" step="24" pin="true"></paper-slider>
+      </core-label>
+
+
+
+
+    </div>
+    <div flex>
+      <daum-map-shalomeir apikey="6266d293227114ddf5adc2e21d738ce96be07e17" width="400px" height="400px" level="10"></daum-map-shalomeir>
+    </div>
+  </div>
+
+
+</body>
+</html>
