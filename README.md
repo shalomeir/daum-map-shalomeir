@@ -2,6 +2,7 @@ daum-map-shalomeir
 ================
 
 See the [component page](http://shalomeir.github.io/daum-map-shalomeir) for more information.
+This is not working now.
 
 ## Getting Started
 
